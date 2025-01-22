@@ -145,3 +145,76 @@ Filesystem           Size  Used Avail Use% Mounted on
 
 🌞 Gestion basique de users
 
+```
+[hugo@vbox ~]$ cat /etc/passwd
+alice:x:1001:1001::/home/alice:/bin/bash
+bob:x:1002:1002::/home/bob:/bin/bash
+charlie:x:1003:1003::/home/charlie:/bin/bash
+eve:x:1004:1004::/home/eve:/bin/bash
+backup:x:1005:1005::/home/backup:/usr/sbin/nologin
+```
+
+🌞 La conf sudo doit être la suivante
+
+```
+[hugo@vbox ~]$ cat /etc/group
+alice:x:1001:
+bob:x:1002:
+charlie:x:1003:
+eve:x:1004:
+admins:x:1006:alice,bob,charlie
+backup:x:1005:
+```
+
+🌞 La conf sudo doit être la suivante
+
+```
+[eve@vbox etc]$ sudo ls
+adjtime                  environment  ld.so.conf                os-release              ssl
+aliases                  ethertypes   ld.so.conf.d              pam.d                   sssd
+alternatives             exports      libaudit.conf             passwd                  statetab.d
+anacrontab               filesystems  libnl                     passwd-                 subgid
+audit                    firewalld    libreport                 pkcs11                  subgid-
+authselect               fonts        libssh                    pki                     subuid
+bash_completion.d        fstab        libuser.conf              pm                      subuid-
+```
+```
+[eve@vbox etc]$ sudo nano /etc/passwd
+
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+[sudo] password for eve:
+Sorry, user eve is not allowed to execute '/bin/nano /etc/passwd' as root on vbox.
+```
+
+🌞 Le dossier /var/backup
+
+
+🌞 Mots de passe des users, prouvez que
+
+```
+[hugo@vbox ~]$ sudo grep alice /etc/shadow
+alice:$6$uZTMPJDXwhhq2N2H$NsKxi0HtdQ/nj7lbTIMslIBrPSiMW0RLSvQYlVw71hISNsEQhFEwgE2QjGOIQaLFRbW2NFERKR18y/QZAjs1H0:20105:0:99999:7:::
+[hugo@vbox ~]$ sudo grep backup /etc/shadow
+backup:$6$.vXRwEdOcmOJsR8p$At47WK8A30AIaVwXbB6gZuJX14YIF0nRvg67yFciS4UpyGrSWMTR4RmqKvzAT3v.HZYyklhgObtg8VSsxMXTm/:20110:0:99999:7:::
+```
+
+🌞 User eve
+
+```
+[eve@vbox ~]$ sudo -l
+Matching Defaults entries for eve on vbox:
+    !visiblepw, always_set_home, match_group_by_gid, always_query_group_plugin, env_reset, env_keep="COLORS DISPLAY
+    HOSTNAME HISTSIZE KDEDIR LS_COLORS", env_keep+="MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE",
+    env_keep+="LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES", env_keep+="LC_MONETARY LC_NAME LC_NUMERIC
+    LC_PAPER LC_TELEPHONE", env_keep+="LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY",
+    secure_path=/sbin\:/bin\:/usr/sbin\:/usr/bin
+
+User eve may run the following commands on vbox:
+    (ALL) NOPASSWD: /bin/ls
+```
